@@ -1,22 +1,16 @@
 import { withAuth } from 'next-auth/middleware'
-import { NextResponse } from 'next/server'
 
-export default withAuth(
-  function middleware(req) {
-    return NextResponse.next()
+export default withAuth({
+  callbacks: {
+    authorized: ({ token }) => {
+      return !!token && !!token.email?.endsWith('@rileyinvestmentgroup.com')
+    },
   },
-  {
-    callbacks: {
-      authorized: ({ token }) => {
-        return !!token && token.email?.endsWith('@rileyinvestmentgroup.com')
-      },
-    },
-    pages: {
-      signIn: '/auth/signin',
-      error: '/auth/error',
-    },
-  }
-)
+  pages: {
+    signIn: '/auth/signin',
+    error: '/auth/error',
+  },
+})
 
 export const config = {
   matcher: [
