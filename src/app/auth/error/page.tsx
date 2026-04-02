@@ -43,6 +43,8 @@ function ErrorContent() {
   )
 }
 
+export const dynamic = 'force-dynamic'
+
 export default function AuthError() {
   return (
     <Suspense fallback={
