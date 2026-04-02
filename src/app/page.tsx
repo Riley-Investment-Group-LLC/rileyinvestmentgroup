@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { reportApi } from '@/lib/api'
 import Link from 'next/link'
+import { useSession, signOut } from 'next-auth/react'
 import { 
   DollarSign, 
   ShoppingCart, 
@@ -10,10 +11,12 @@ import {
   Users, 
   TrendingUp,
   AlertCircle,
-  FileText
+  FileText,
+  LogOut
 } from 'lucide-react'
 
 export default function Dashboard() {
+  const { data: session } = useSession()
   const { data: stats, isLoading } = useQuery({
     queryKey: ['dashboard'],
     queryFn: async () => {
@@ -79,26 +82,38 @@ export default function Dashboard() {
               <h1 className="text-2xl font-bold text-gray-900">Riley Investment Group LLC</h1>
               <p className="text-sm text-gray-600">Business Management System</p>
             </div>
-            <nav className="flex gap-4">
-              <Link href="/invoices" className="text-blue-600 hover:text-blue-800">
-                Invoices
-              </Link>
-              <Link href="/purchases" className="text-blue-600 hover:text-blue-800">
-                Purchases
-              </Link>
-              <Link href="/products" className="text-blue-600 hover:text-blue-800">
-                Products
-              </Link>
-              <Link href="/customers" className="text-blue-600 hover:text-blue-800">
-                Customers
-              </Link>
-              <Link href="/reports" className="text-blue-600 hover:text-blue-800">
-                Reports
-              </Link>
-              <Link href="/bank" className="text-blue-600 hover:text-blue-800">
-                Bank
-              </Link>
-            </nav>
+            <div className="flex items-center gap-6">
+              <nav className="flex gap-4">
+                <Link href="/invoices" className="text-blue-600 hover:text-blue-800">
+                  Invoices
+                </Link>
+                <Link href="/purchases" className="text-blue-600 hover:text-blue-800">
+                  Purchases
+                </Link>
+                <Link href="/products" className="text-blue-600 hover:text-blue-800">
+                  Products
+                </Link>
+                <Link href="/customers" className="text-blue-600 hover:text-blue-800">
+                  Customers
+                </Link>
+                <Link href="/reports" className="text-blue-600 hover:text-blue-800">
+                  Reports
+                </Link>
+                <Link href="/bank" className="text-blue-600 hover:text-blue-800">
+                  Bank
+                </Link>
+              </nav>
+              <div className="flex items-center gap-3 border-l pl-4">
+                <span className="text-sm text-gray-600">{session?.user?.email}</span>
+                <button
+                  onClick={() => signOut()}
+                  className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                  title="Sign out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </header>
