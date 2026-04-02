@@ -1,10 +1,11 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { AlertCircle, Building2 } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 
-export default function AuthError() {
+function ErrorContent() {
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
 
@@ -24,12 +25,9 @@ export default function AuthError() {
         </div>
 
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-          <p className="text-sm text-red-800">
-            <strong>Only @rileyinvestmentgroup.com accounts are allowed.</strong>
-          </p>
-          <p className="text-sm text-red-600 mt-2">
+          <p className="text-sm text-red-600">
             {error === 'AccessDenied' 
-              ? 'Your email domain is not authorized.'
+              ? 'Your account is not authorized to access this system.'
               : 'An authentication error occurred.'}
           </p>
         </div>
@@ -42,5 +40,17 @@ export default function AuthError() {
         </Link>
       </div>
     </div>
+  )
+}
+
+export default function AuthError() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-100 flex items-center justify-center">
+        <div className="text-gray-600">Loading...</div>
+      </div>
+    }>
+      <ErrorContent />
+    </Suspense>
   )
 }
