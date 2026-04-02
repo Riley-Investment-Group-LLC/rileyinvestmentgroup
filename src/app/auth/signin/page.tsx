@@ -44,10 +44,6 @@ export default function SignIn() {
             </svg>
             Sign in with Google
           </button>
-
-          <p className="text-sm text-gray-500 text-center mt-4">
-            Only @rileyinvestmentgroup.com accounts are authorized
-          </p>
         </div>
       </div>
     </div>
