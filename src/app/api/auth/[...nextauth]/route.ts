@@ -15,7 +15,16 @@ const handler = NextAuth({
       }
       return false
     },
+    async jwt({ token, user, account, profile }) {
+      if (user) {
+        token.email = user.email
+      }
+      return token
+    },
     async session({ session, token }) {
+      if (token.email) {
+        session.user.email = token.email as string
+      }
       return session
     },
   },
@@ -24,6 +33,7 @@ const handler = NextAuth({
     error: '/auth/error',
   },
   secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === 'development',
 })
 
 export { handler as GET, handler as POST }
